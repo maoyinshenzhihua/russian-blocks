@@ -10,6 +10,6 @@
         android:width="3dp"
         android:color="#0099FF" />
     
-    <!-- 圆角 -->
-    <corners android:radius="10dp" />
+    <!-- 直角边框 -->
+    <corners android:radius="0dp" />
 </shape>

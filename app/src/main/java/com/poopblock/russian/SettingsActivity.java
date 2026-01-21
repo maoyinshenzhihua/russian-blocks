@@ -144,6 +144,33 @@ public class SettingsActivity extends AppCompatActivity {
             // 检查并应用转场动画
             applyTransitionAnimation();
         });
+        
+        // 为所有按钮添加焦点监听，实现手柄导航高亮
+        addButtonFocusListeners();
+    }
+    
+    /**
+     * 为所有按钮添加焦点监听
+     */
+    private void addButtonFocusListeners() {
+        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 获得焦点，显示蓝色边框
+                    v.setBackgroundResource(R.drawable.btn_blue_border);
+                } else {
+                    // 失去焦点，恢复默认样式
+                    v.setBackgroundResource(R.drawable.btn_white_black_border);
+                }
+            }
+        };
+        
+        // 为返回按钮添加焦点监听
+        backButton.setOnFocusChangeListener(focusChangeListener);
+        
+        // 设置初始焦点
+        backButton.requestFocus();
     }
     
     @Override

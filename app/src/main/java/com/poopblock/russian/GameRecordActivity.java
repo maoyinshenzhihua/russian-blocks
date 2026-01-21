@@ -70,6 +70,34 @@ public class GameRecordActivity extends AppCompatActivity {
             SoundManager.getInstance().playValidClickSound();
             clearAllRecords();
         });
+        
+        // 为所有按钮添加焦点监听，实现手柄导航高亮
+        addButtonFocusListeners();
+    }
+    
+    /**
+     * 为所有按钮添加焦点监听
+     */
+    private void addButtonFocusListeners() {
+        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 获得焦点，显示蓝色边框
+                    v.setBackgroundResource(R.drawable.btn_blue_border);
+                } else {
+                    // 失去焦点，恢复默认样式
+                    v.setBackgroundResource(R.drawable.btn_white_black_border);
+                }
+            }
+        };
+        
+        // 为所有按钮添加焦点监听
+        backBtn.setOnFocusChangeListener(focusChangeListener);
+        clearRecordBtn.setOnFocusChangeListener(focusChangeListener);
+        
+        // 设置初始焦点
+        backBtn.requestFocus();
     }
     
     @Override

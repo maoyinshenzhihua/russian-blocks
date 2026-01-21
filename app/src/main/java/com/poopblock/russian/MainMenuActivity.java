@@ -9,6 +9,12 @@ import android.widget.Button;
 
 public class MainMenuActivity extends AppCompatActivity {
 
+    // 类成员变量，方便在其他方法中访问
+    private Button startGameBtn;
+    private Button gameRecordBtn;
+    private Button gameSettingsBtn;
+    private Button aboutBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +26,10 @@ public class MainMenuActivity extends AppCompatActivity {
         SoundManager.getInstance().init(this, isGameSoundEnabled);
 
         // 绑定按钮点击事件
-        Button startGameBtn = findViewById(R.id.start_game_btn);
-        Button gameRecordBtn = findViewById(R.id.game_record_btn);
-        Button gameSettingsBtn = findViewById(R.id.game_settings_btn);
-        Button aboutBtn = findViewById(R.id.about_btn);
+        startGameBtn = findViewById(R.id.start_game_btn);
+        gameRecordBtn = findViewById(R.id.game_record_btn);
+        gameSettingsBtn = findViewById(R.id.game_settings_btn);
+        aboutBtn = findViewById(R.id.about_btn);
 
         startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +82,36 @@ public class MainMenuActivity extends AppCompatActivity {
                 applyTransitionAnimation();
             }
         });
+        
+        // 为所有按钮添加焦点监听，实现手柄导航高亮
+        addButtonFocusListeners();
+    }
+    
+    /**
+     * 为所有按钮添加焦点监听
+     */
+    private void addButtonFocusListeners() {
+        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 获得焦点，显示蓝色边框
+                    v.setBackgroundResource(R.drawable.btn_blue_border);
+                } else {
+                    // 失去焦点，恢复默认样式
+                    v.setBackgroundResource(R.drawable.btn_white_black_border);
+                }
+            }
+        };
+        
+        // 为所有按钮添加焦点监听
+        startGameBtn.setOnFocusChangeListener(focusChangeListener);
+        gameRecordBtn.setOnFocusChangeListener(focusChangeListener);
+        gameSettingsBtn.setOnFocusChangeListener(focusChangeListener);
+        aboutBtn.setOnFocusChangeListener(focusChangeListener);
+        
+        // 设置初始焦点
+        startGameBtn.requestFocus();
     }
     
     /**
