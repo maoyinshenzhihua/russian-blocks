@@ -85,6 +85,8 @@ public class GameRecordActivity extends AppCompatActivity {
                 if (hasFocus) {
                     // 获得焦点，显示蓝色边框
                     v.setBackgroundResource(R.drawable.btn_blue_border);
+                    // 播放点击音效，提供听觉反馈
+                    SoundManager.getInstance().playValidClickSound();
                 } else {
                     // 失去焦点，恢复默认样式
                     v.setBackgroundResource(R.drawable.btn_white_black_border);
