@@ -279,6 +279,26 @@ public class GameActivity extends AppCompatActivity {
     }
     
     /**
+     * 重置所有按钮背景为默认样式
+     */
+    private void resetButtonBackgrounds() {
+        backBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+        rotateBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+        leftBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+        downBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+        rightBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+        fastDropBtn.setBackgroundResource(R.drawable.btn_white_black_border);
+    }
+    
+    /**
+     * 将指定按钮设置为高亮样式
+     * @param button 要高亮的按钮
+     */
+    private void setButtonHighlighted(Button button) {
+        button.setBackgroundResource(R.drawable.btn_blue_border);
+    }
+    
+    /**
      * 设置按钮监听器
      */
     private void setupButtonListeners() {
@@ -1087,7 +1107,7 @@ public class GameActivity extends AppCompatActivity {
     }
     
     /**
-     * 处理按键事件
+     * 处理按键按下事件
      */
     @Override
     public boolean onKeyDown(int keyCode, android.view.KeyEvent event) {
@@ -1102,42 +1122,53 @@ public class GameActivity extends AppCompatActivity {
             isFirstControllerInput = true;
         }
         
+        // 重置所有按钮背景
+        resetButtonBackgrounds();
+        
         // 手柄按键映射
         switch (keyCode) {
             // D-pad方向键
             case android.view.KeyEvent.KEYCODE_DPAD_LEFT:
                 playClickSound();
                 moveLeft();
+                setButtonHighlighted(leftBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_DPAD_RIGHT:
                 playClickSound();
                 moveRight();
+                setButtonHighlighted(rightBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_DPAD_DOWN:
                 playClickSound();
                 moveDown();
+                setButtonHighlighted(downBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_DPAD_UP:
                 playClickSound();
                 rotateBlock();
+                setButtonHighlighted(rotateBtn);
                 break;
                 
             // 标准按钮
             case android.view.KeyEvent.KEYCODE_BUTTON_A: // A键 - 旋转
                 playClickSound();
                 rotateBlock();
+                setButtonHighlighted(rotateBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_BUTTON_B: // B键 - 快速下落
                 playClickSound();
                 fastDrop();
+                setButtonHighlighted(fastDropBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_BUTTON_X: // X键 - 左移
                 playClickSound();
                 moveLeft();
+                setButtonHighlighted(leftBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_BUTTON_Y: // Y键 - 右移
                 playClickSound();
                 moveRight();
+                setButtonHighlighted(rightBtn);
                 break;
                 
             // 肩键
@@ -1145,11 +1176,13 @@ public class GameActivity extends AppCompatActivity {
             case android.view.KeyEvent.KEYCODE_BUTTON_L2: // L2 - 左移
                 playClickSound();
                 moveLeft();
+                setButtonHighlighted(leftBtn);
                 break;
             case android.view.KeyEvent.KEYCODE_BUTTON_R1: // R1 - 右移
             case android.view.KeyEvent.KEYCODE_BUTTON_R2: // R2 - 右移
                 playClickSound();
                 moveRight();
+                setButtonHighlighted(rightBtn);
                 break;
                 
             default:
@@ -1162,5 +1195,20 @@ public class GameActivity extends AppCompatActivity {
         }
         
         return true;
+    }
+    
+    /**
+     * 处理按键释放事件
+     */
+    @Override
+    public boolean onKeyUp(int keyCode, android.view.KeyEvent event) {
+        if (!isGameRunning || !isControllerEnabled) {
+            return super.onKeyUp(keyCode, event);
+        }
+        
+        // 重置所有按钮背景
+        resetButtonBackgrounds();
+        
+        return super.onKeyUp(keyCode, event);
     }
 }
