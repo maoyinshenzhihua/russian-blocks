@@ -56,6 +56,7 @@ public class GameActivity extends AppCompatActivity {
     // 音效播放
     private android.media.SoundPool soundPool;
     private int clickSoundId;
+    private int invalidOperationSoundId;
     private int currentPlayingSoundId = -1;
     private int[] preloadedSounds; // 预加载的音效ID数组
     
@@ -173,6 +174,9 @@ public class GameActivity extends AppCompatActivity {
         isControllerEnabled = sharedPreferences.getBoolean("controller_enabled", false);
         isGameSoundEnabled = sharedPreferences.getBoolean("game_sound_enabled", true);
         
+        // 初始化SoundManager
+        SoundManager.getInstance().init(this, isGameSoundEnabled);
+        
         // 初始化音效播放
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             android.media.AudioAttributes audioAttributes = new android.media.AudioAttributes.Builder()
@@ -196,9 +200,6 @@ public class GameActivity extends AppCompatActivity {
         preloadedSounds[4] = soundPool.load(this, BLOCK_SOUNDS[4], 1); // J型 - 粑粑
         preloadedSounds[5] = soundPool.load(this, BLOCK_SOUNDS[5], 1); // S型 - 石头
         preloadedSounds[6] = soundPool.load(this, BLOCK_SOUNDS[6], 1); // Z型 - 石头
-        
-        // 加载点击音效
-        clickSoundId = soundPool.load(this, R.raw.validclick, 1);
         
         // 为第一个方块音效添加加载完成监听器
         soundPool.setOnLoadCompleteListener(new android.media.SoundPool.OnLoadCompleteListener() {
@@ -273,9 +274,7 @@ public class GameActivity extends AppCompatActivity {
      * 播放点击音效
      */
     private void playClickSound() {
-        if (isGameSoundEnabled && soundPool != null && clickSoundId != 0) {
-            soundPool.play(clickSoundId, 1.0f, 1.0f, 0, 0, 1.0f);
-        }
+        SoundManager.getInstance().playValidClickSound();
     }
     
     /**
@@ -1186,6 +1185,8 @@ public class GameActivity extends AppCompatActivity {
                 break;
                 
             default:
+                // 播放无效操作音效
+                SoundManager.getInstance().playInvalidOperationSound();
                 return super.onKeyDown(keyCode, event);
         }
         

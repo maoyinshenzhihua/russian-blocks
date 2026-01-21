@@ -16,6 +16,11 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
 
+        // 初始化音效管理器
+        android.content.SharedPreferences sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
+        boolean isGameSoundEnabled = sharedPreferences.getBoolean("game_sound_enabled", true);
+        SoundManager.getInstance().init(this, isGameSoundEnabled);
+
         // 设置开发者信息
         TextView developerText = findViewById(R.id.developer_text);
         developerText.setText("开发者：小花爱瞎剪");
@@ -29,6 +34,8 @@ public class AboutActivity extends AppCompatActivity {
         videoLinkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放点击音效
+                SoundManager.getInstance().playValidClickSound();
                 // B站视频URL
                 String videoUrl = "https://www.bilibili.com/video/BV1maVTzDEYr";
                 

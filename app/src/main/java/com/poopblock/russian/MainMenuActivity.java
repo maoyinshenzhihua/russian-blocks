@@ -2,6 +2,7 @@ package com.poopblock.russian;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,11 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
 
+        // 初始化音效管理器
+        SharedPreferences sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
+        boolean isGameSoundEnabled = sharedPreferences.getBoolean("game_sound_enabled", true);
+        SoundManager.getInstance().init(this, isGameSoundEnabled);
+
         // 绑定按钮点击事件
         Button startGameBtn = findViewById(R.id.start_game_btn);
         Button gameRecordBtn = findViewById(R.id.game_record_btn);
@@ -22,6 +28,8 @@ public class MainMenuActivity extends AppCompatActivity {
         startGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放点击音效
+                SoundManager.getInstance().playValidClickSound();
                 // 跳转到游戏界面
                 Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
                 startActivity(intent);
@@ -33,6 +41,8 @@ public class MainMenuActivity extends AppCompatActivity {
         gameRecordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放点击音效
+                SoundManager.getInstance().playValidClickSound();
                 // 跳转到游戏记录页面
                 Intent intent = new Intent(MainMenuActivity.this, GameRecordActivity.class);
                 startActivity(intent);
@@ -44,6 +54,8 @@ public class MainMenuActivity extends AppCompatActivity {
         gameSettingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放点击音效
+                SoundManager.getInstance().playValidClickSound();
                 // 跳转到设置页面
                 Intent intent = new Intent(MainMenuActivity.this, SettingsActivity.class);
                 startActivity(intent);
@@ -55,6 +67,8 @@ public class MainMenuActivity extends AppCompatActivity {
         aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 播放点击音效
+                SoundManager.getInstance().playValidClickSound();
                 // 跳转到关于页面
                 Intent intent = new Intent(MainMenuActivity.this, AboutActivity.class);
                 startActivity(intent);

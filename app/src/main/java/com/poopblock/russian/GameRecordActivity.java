@@ -38,6 +38,11 @@ public class GameRecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_record_activity);
 
+        // 初始化音效管理器
+        SharedPreferences sharedPreferences = getSharedPreferences("game_settings", MODE_PRIVATE);
+        boolean isGameSoundEnabled = sharedPreferences.getBoolean("game_sound_enabled", true);
+        SoundManager.getInstance().init(this, isGameSoundEnabled);
+
         // 绑定控件
         recordList = findViewById(R.id.record_list);
         backBtn = findViewById(R.id.back_btn);
@@ -52,6 +57,8 @@ public class GameRecordActivity extends AppCompatActivity {
 
         // 设置返回按钮点击事件
         backBtn.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             finish();
             // 检查并应用转场动画
             applyTransitionAnimation();
@@ -59,6 +66,8 @@ public class GameRecordActivity extends AppCompatActivity {
 
         // 设置清空记录按钮点击事件
         clearRecordBtn.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             clearAllRecords();
         });
     }

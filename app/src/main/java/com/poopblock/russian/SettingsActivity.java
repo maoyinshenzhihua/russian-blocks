@@ -72,6 +72,9 @@ public class SettingsActivity extends AppCompatActivity {
         boolean isGameSoundEnabled = sharedPreferences.getBoolean(KEY_GAME_SOUND_ENABLED, true);
         gameSoundSwitch.setChecked(isGameSoundEnabled);
         
+        // 初始化音效管理器
+        SoundManager.getInstance().init(this, isGameSoundEnabled);
+        
         // 从SharedPreferences加载小屏模式开关状态
         boolean isSmallScreenEnabled = sharedPreferences.getBoolean(KEY_SMALL_SCREEN_ENABLED, false);
         smallScreenSwitch.setChecked(isSmallScreenEnabled);
@@ -115,10 +118,15 @@ public class SettingsActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(KEY_GAME_SOUND_ENABLED, isChecked);
             editor.apply();
+            
+            // 更新音效管理器的状态
+            SoundManager.getInstance().setSoundEnabled(isChecked);
         });
         
         // 设置小屏模式开关点击事件
         smallScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             // 保存设置到SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(KEY_SMALL_SCREEN_ENABLED, isChecked);
@@ -130,6 +138,8 @@ public class SettingsActivity extends AppCompatActivity {
         
         // 设置返回按钮点击事件
         backButton.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             finish();
             // 检查并应用转场动画
             applyTransitionAnimation();
