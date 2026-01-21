@@ -938,20 +938,50 @@ public class GameActivity extends AppCompatActivity {
         
         // 设置按钮点击事件
         restartBtn.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             dialog.dismiss();
             restartGame();
         });
         
         saveBtn.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             dialog.dismiss();
             saveGameRecord();
             onBackPressed();
         });
         
         homeBtn.setOnClickListener(v -> {
+            // 播放点击音效
+            SoundManager.getInstance().playValidClickSound();
             dialog.dismiss();
             onBackPressed();
         });
+        
+        // 为弹窗按钮添加焦点监听，实现手柄导航高亮和音效
+        View.OnFocusChangeListener focusChangeListener = new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // 获得焦点，显示蓝色边框
+                    v.setBackgroundResource(R.drawable.btn_blue_border);
+                    // 播放点击音效，提供听觉反馈
+                    SoundManager.getInstance().playValidClickSound();
+                } else {
+                    // 失去焦点，恢复默认样式
+                    v.setBackgroundResource(R.drawable.btn_white_black_border);
+                }
+            }
+        };
+        
+        // 为所有弹窗按钮添加焦点监听
+        restartBtn.setOnFocusChangeListener(focusChangeListener);
+        saveBtn.setOnFocusChangeListener(focusChangeListener);
+        homeBtn.setOnFocusChangeListener(focusChangeListener);
+        
+        // 设置初始焦点为重新开始按钮
+        restartBtn.requestFocus();
         
         // 显示对话框
         dialog.show();
